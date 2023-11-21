@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OpenAI Chat Turbo</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <h1>OpenAI Chat Turbo</h1>
+    <form id="chatForm">
+        <label for="input_text">Enter Text:</label>
+        <input type="text" id="input_text" name="input_text" required>
+        <button type="submit">Submit</button>
+    </form>
+    <form id="chatForm2">
+        <label for="input_text">Enter Text:</label>
+        <input type="text" id="input_text" name="input_text" required>
+        <label for="token">Token:</label> <!-- 添加令牌输入标签 -->
+        <input type="text" id="token" name="token" required> <!-- 添加令牌输入框 -->
+        <button type="submit">Submit</button>
+    </form>
+    <div id="response">
+        {% if response %}
+            <p>{{ response }}</p>
+        {% endif %}
+    </div>
+
+    <script>
+        $(document).ready(function () {
+            $('#chatForm').submit(function (e) {
+                e.preventDefault(); // 阻止默认表单提交行为
+                var formData = $(this).serialize();
+                $.post('/chatgpt3turbo', formData, function (response) {
+                    $('#response').html('<p>' + response.response + '</p>');
+                });
+            });
+        });
+
+        $(document).ready(function () {
+        $('#chatForm2').submit(function (e) {
+            e.preventDefault(); // 阻止默认表单提交行为
+            var formData = $(this).serialize();
+            var token = $("#token").val(); // 获取令牌输入框的值
+
+            // 添加令牌到请求头
+            $.ajax({
+                url: '/chatgpt3turbo1',
+                type: 'POST',
+                headers: {
+                    'Authorization': 'Bearer ' + token
+                },
+                data: formData,
+                success: function (response) {
+                    $('#response').html('<p>' + response.response + '</p>');
+                },
+                error: function (xhr) {
+                    // 处理错误响应
+                    $('#response').html('<p>Error: ' + xhr.responseText + '</p>');
+                }
+        });
+    });
+});
+
+
+
+    </script>
+</body>
+</html>
