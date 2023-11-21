@@ -21,9 +21,6 @@
         <button type="submit">Submit</button>
     </form>
     <div id="response">
-        {% if response %}
-            <p>{{ response }}</p>
-        {% endif %}
     </div>
 
     <script>
@@ -31,7 +28,7 @@
             $('#chatForm').submit(function (e) {
                 e.preventDefault(); // 阻止默认表单提交行为
                 var formData = $(this).serialize();
-                $.post('/chatgpt3turbo', formData, function (response) {
+                $.post('https://afternoon-shore-35590-dcbb75d95acf.herokuapp.com/chatgpt3turbo', formData, function (response) {
                     $('#response').html('<p>' + response.response + '</p>');
                 });
             });
@@ -45,7 +42,7 @@
 
             // 添加令牌到请求头
             $.ajax({
-                url: '/chatgpt3turbo1',
+                url: 'https://afternoon-shore-35590-dcbb75d95acf.herokuapp.com/chatgpt3turbo1',
                 type: 'POST',
                 headers: {
                     'Authorization': 'Bearer ' + token
